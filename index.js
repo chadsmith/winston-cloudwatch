@@ -105,6 +105,17 @@ WinstonCloudWatch.prototype.submit = function(callback) {
   );
 };
 
+WinstonCloudWatch.prototype.close = function() {
+  var self = this;
+  clearInterval(self.intervalId);
+  self.intervalId = null;
+  self.submit(function(err) {
+    if (err) {
+      self.errorHandler ? self.errorHandler(err) : console.error(err);
+    }
+  });
+};
+
 function stringify(o) { return JSON.stringify(o, null, '  '); }
 
 module.exports = WinstonCloudWatch;
